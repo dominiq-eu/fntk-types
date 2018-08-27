@@ -60,8 +60,8 @@ parcelRequire = (function(e, r, n, t) {
                 return (function(n, t) {
                   var r = [],
                     e = !0,
-                    o = !1,
-                    u = void 0;
+                    u = !1,
+                    o = void 0;
                   try {
                     for (
                       var i, c = n[Symbol.iterator]();
@@ -70,12 +70,12 @@ parcelRequire = (function(e, r, n, t) {
                       e = !0
                     );
                   } catch (n) {
-                    (o = !0), (u = n);
+                    (u = !0), (o = n);
                   } finally {
                     try {
                       !e && c.return && c.return();
                     } finally {
-                      if (o) throw u;
+                      if (u) throw o;
                     }
                   }
                   return r;
@@ -114,16 +114,16 @@ parcelRequire = (function(e, r, n, t) {
         var e = function(n) {
             return null != n && NaN !== n;
           },
-          o = function(n) {
+          u = function(n) {
             return function(r) {
               return e(r) && (void 0 === r ? "undefined" : t(r)) === n;
             };
           },
-          u = o("function"),
-          i = o("object"),
-          c = o("string"),
-          f = o("number"),
-          a = o("boolean"),
+          o = u("function"),
+          i = u("object"),
+          c = u("string"),
+          f = u("number"),
+          a = u("boolean"),
           l = Array.isArray,
           s = function(n) {
             throw new TypeError(n);
@@ -133,7 +133,7 @@ parcelRequire = (function(e, r, n, t) {
               return console.log(n, t), t;
             };
           },
-          b = function n(t) {
+          p = function n(t) {
             return {
               andThen: function(r) {
                 return n(r(t));
@@ -143,7 +143,7 @@ parcelRequire = (function(e, r, n, t) {
               }
             };
           },
-          p = function(n, t) {
+          b = function(n, t) {
             return (
               !(!i(t) || !l(n)) &&
               0 ===
@@ -153,126 +153,139 @@ parcelRequire = (function(e, r, n, t) {
             );
           },
           v = function(t, e) {
-            var o = n(e, 2),
-              u = o[0],
-              i = o[1];
-            return Object.assign(t, r({}, u, i));
+            var u = n(e, 2),
+              o = u[0],
+              i = u[1];
+            return Object.assign(t, r({}, o, i));
           },
-          d = function(n) {
+          h = function(n) {
             return function(t) {
               return e(t) && Object.setPrototypeOf(t, n), t;
             };
           },
-          m = function(n, t) {
+          d = function n(t, u) {
             var o =
                 arguments.length > 2 && void 0 !== arguments[2]
                   ? arguments[2]
                   : function(n) {
                       return n;
                     },
-              u = r({}, n, function(r) {
-                return b(o(r))
-                  .andThen(function(e) {
-                    return t(e)
-                      ? e
+              i = r({}, t, function(n) {
+                return p(o(n))
+                  .andThen(function(r) {
+                    return u(r)
+                      ? r
                       : s(
                           "Value '" +
-                            r +
-                            "' is not of expected type '" +
                             n +
+                            "' is not of expected type '" +
+                            t +
                             "'"
                         );
                   })
-                  .andThen(d({ constructor: u[n] }))
+                  .andThen(h({ constructor: i[t] }))
                   .value();
               });
             return (
-              (u[n].is = function(r) {
-                return e(r) && r.prototype && r.prototype.constructor
-                  ? r.prototype.constuctor === u[n]
-                  : t(r);
+              (i[t].is = function(n) {
+                return e(n) && n.prototype && n.prototype.constructor
+                  ? n.prototype.constuctor === i[t]
+                  : u(n);
               }),
-              (u[n].toString = function() {
-                return n + "(x)";
+              (i[t].check = function(n) {
+                return i[t].is(n)
+                  ? n
+                  : s("Check: Failed: Expect type '" + t + "'");
               }),
-              (u[n].inspect = function() {
-                return n + "(x)";
+              (i[t].of = function(r) {
+                return n(
+                  t,
+                  function(n) {
+                    return i[t].is(n) && n === r;
+                  },
+                  function() {
+                    return r;
+                  }
+                );
               }),
-              u[n]
+              (i[t].toString = function() {
+                return t + "(x)";
+              }),
+              i[t]
             );
           },
-          g = m("String", c, String),
-          h = m("Object", i, Object),
-          O = m("Number", f, Number),
-          j = m("Boolean", a, Boolean),
-          S = m("Boolean", Array.isArray, Array),
+          m = d("String", c, String),
+          O = d("Object", i, Object),
+          g = d("Number", f, Number),
+          j = d("Boolean", a, Boolean),
+          T = d("Boolean", Array.isArray, Array),
           A = {};
-        (A[String] = g),
-          (A[Object] = h),
-          (A[Number] = O),
+        (A[String] = m),
+          (A[Object] = O),
+          (A[Number] = g),
           (A[Boolean] = j),
-          (A[Array] = S);
-        var T = function(n) {
+          (A[Array] = T);
+        var S = function(n) {
             return void 0 !== A[n] ? A[n] : n;
           },
-          N = function t(r) {
+          k = function t(r) {
             return Object.entries(r)
               .map(function(r) {
                 var e = n(r, 2),
-                  o = e[0],
-                  u = e[1];
-                return [o, i(u) ? t(u) : T(u)];
+                  u = e[0],
+                  o = e[1];
+                return [u, i(o) ? t(o) : S(o)];
               })
               .reduce(v, {});
           },
-          k = i,
-          w = function(t) {
+          N = i,
+          E = function(t) {
             return function(r) {
               return (
                 i(r) &&
-                p(Object.keys(t), r) &&
+                b(Object.keys(t), r) &&
                 0 ===
                   Object.entries(t).filter(function(t) {
                     var e = n(t, 2),
-                      o = e[0];
-                    return !e[1].is(r[o]);
+                      u = e[0];
+                    return !e[1].is(r[u]);
                   }).length
               );
             };
           },
-          x = function(t) {
+          w = function(t) {
             return function(r) {
               return Object.entries(t)
                 .map(function(t) {
                   var e = n(t, 2),
-                    o = e[0];
-                  return [o, (0, e[1])(r[o])];
+                    u = e[0];
+                  return [u, (0, e[1])(r[u])];
                 })
                 .reduce(v, {});
             };
           },
-          B = function(n, t) {
-            return k(t)
-              ? b(N(t))
+          x = function(n, t) {
+            return N(t)
+              ? p(k(t))
                   .andThen(function(t) {
-                    return m(n, w(t), x(t));
+                    return d(n, E(t), w(t));
                   })
                   .value()
               : s(
                   "Data: Type definition must consist only of functions and objects containing functions"
                 );
           },
-          E = function(n) {
+          B = function(n) {
             return (
               0 ===
               Object.values(n).filter(function(n) {
-                return !u(n);
+                return !o(n);
               }).length
             );
           },
           P = function(t, r) {
             return function(e) {
-              var o = Object.entries(t)
+              var u = Object.entries(t)
                   .filter(function(t) {
                     var e = n(t, 2);
                     e[0];
@@ -284,20 +297,20 @@ parcelRequire = (function(e, r, n, t) {
                     r[1];
                     return e;
                   })[0],
-                u = e[o];
-              return u ? u(r) : s(o + " is not in the object!");
+                o = e[u];
+              return o ? o(r) : s(u + " is not in the object!");
             };
           },
-          D = function(t, r) {
-            return E(r)
-              ? b(N(r))
+          z = function(t, r) {
+            return B(r)
+              ? p(k(r))
                   .andThen(function(r) {
                     return Object.entries(r)
                       .map(function(t) {
                         var r = n(t, 2),
                           e = r[0],
-                          o = r[1];
-                        return [e, m(e, o.is, o)];
+                          u = r[1];
+                        return [e, d(e, u.is, u)];
                       })
                       .reduce(
                         v,
@@ -312,6 +325,11 @@ parcelRequire = (function(e, r, n, t) {
                               }).length > 0
                             );
                           },
+                          check: function(n) {
+                            return this.is(n)
+                              ? n
+                              : s("Check: Failed: Expect type '" + t + "'");
+                          },
                           case: function(n, t) {
                             return P(r, n)(t);
                           }
@@ -321,51 +339,58 @@ parcelRequire = (function(e, r, n, t) {
                   .value()
               : s("Union: Type definition must consist only of functions");
           },
-          M = m("Any", function(n) {
+          C = d("Any", function(n) {
             return e(n);
           }),
-          R = m(
+          D = d(
             "Nothing",
             function(n) {
               return !e(n);
             },
             function(n) {}
           ),
-          U = D("Maybe", { Just: M, Nothing: R }),
-          I = m(
+          F = z("Maybe", { Just: C, Nothing: D }),
+          M = d(
             "Ok",
             function(n) {
-              return i(n) && !0 === n.ok && M.is(n.value);
+              return i(n) && !0 === n.ok && C.is(n.value);
             },
             function(n) {
-              return { ok: !0, value: M(n) };
+              return { ok: !0, value: C(n) };
             }
           ),
-          J = m(
+          R = d(
             "Error",
             function(n) {
-              return i(n) && !1 === n.ok && g.is(n.error);
+              return i(n) && !1 === n.ok && m.is(n.error);
             },
             function(n) {
-              return { ok: !1, error: String(n) };
+              return { ok: !1, error: m(n) };
             }
           ),
-          V = D("Result", { Ok: I, Err: J });
+          U = z("Result", { Ok: M, Err: R }),
+          Z = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+          I = d(
+            "Email",
+            function(n) {
+              return m.is(n) && Z.test(n);
+            },
+            m
+          );
         module.exports = {
-          Type: m,
-          Data: B,
-          Union: D,
-          Maybe: U,
-          Result: V,
-          String: g,
-          Object: h,
-          Number: O,
-          Boolean: j,
-          Array: S,
-          Any: M,
-          Nothing: R,
-          Success: I,
-          Error: J
+          Type: d,
+          Data: x,
+          Union: z,
+          Maybe: F,
+          Result: U,
+          StringType: m,
+          ObjectType: O,
+          NumberType: g,
+          BooleanType: j,
+          ArrayType: T,
+          AnyType: C,
+          NothingType: D,
+          EmailType: I
         };
       },
       {}

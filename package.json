@@ -18,7 +18,8 @@
   },
   "main": "dist/types.js",
   "scripts": {
-    "build": "parcel build src/types.js --no-cache",
+    "build": "parcel build src/types.js --no-cache --detailed-report",
+    "bundle": "parcel build src/types.js --no-cache --no-minify --detailed-report",
     "watch": "parcel watch src/types.js --no-cache",
     "test": "echo '!!! Use Jest or something else to test !!!'",
     "precommit": "yarn test && pretty-quick --staged"

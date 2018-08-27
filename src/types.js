@@ -76,11 +76,19 @@ const Type = (name, typecheck, constructor = x => x) => {
     isNotNull(v) && v.prototype && v.prototype.constructor
       ? v.prototype.constuctor === obj[name]
       : typecheck(v);
-  // obj[name].is = typecheck
+  obj[name].check = x =>
+    obj[name].is(x)
+      ? x
+      : throwError("Check: Failed: Expect type '" + name + "'");
+  obj[name].of = x => Type(name, v => obj[name].is(v) && v === x, () => x);
   obj[name].toString = () => name + "(x)";
-  obj[name].inspect = () => name + "(x)";
+  // obj[name].inspect = () => name + '(x)'
   return obj[name];
 };
+
+//
+// -- JS Type Replacements --
+//
 
 const StringType = Type("String", isString, String);
 const ObjectType = Type("Object", isObject, Object);
@@ -177,6 +185,11 @@ const Union = (name, typeDef) =>
                 toString: () => name,
                 is: x =>
                   Object.values(def).filter(type => type.is(x)).length > 0,
+                check(x) {
+                  return this.is(x)
+                    ? x
+                    : throwError("Check: Failed: Expect type '" + name + "'");
+                },
                 case: (v, opts) => caseOf(def, v)(opts)
               })
             )
@@ -215,7 +228,7 @@ const SuccessType = Type(
 const ErrorType = Type(
   "Error",
   v => isObject(v) && v.ok === false && StringType.is(v.error),
-  v => ({ ok: false, error: String(v) })
+  v => ({ ok: false, error: StringType(v) })
 );
 const Result = Union("Result", {
   Ok: SuccessType,
@@ -223,24 +236,43 @@ const Result = Union("Result", {
 });
 
 //
+// -- Email Type --
+//
+const EmailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const EmailType = Type(
+  "Email", // Name
+  x => StringType.is(x) && EmailRegEx.test(x), // Validator
+  StringType // Constructor
+);
+
+//
 module.exports = {
+  // Tools provided to build types
   Type,
   Data, // Type
   Union,
+
+  // ADTs
   Maybe,
   Result,
 
-  // Typechecked primitive type counterparts
-  String: StringType,
-  Object: ObjectType,
-  Number: NumberType,
-  Boolean: BooleanType,
-  Array: ArrayType,
-  Any: AnyType,
-  Nothing: NothingType,
-  Success: SuccessType,
-  Error: ErrorType
+  // Types
+  StringType,
+  ObjectType,
+  NumberType,
+  BooleanType,
+  ArrayType,
+  AnyType,
+  NothingType,
+
+  // Specific Sub Types
+  EmailType
+
+  // Success: SuccessType,
+  // Error: ErrorType
 };
+
+// TODO: Need to write tests for the types!
 
 /*
 
