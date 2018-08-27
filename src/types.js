@@ -73,16 +73,20 @@ const Type = (name, typecheck, constructor = x => x) => {
                 .value()
         }
     }
-    // Constructor typecheck?
+    // Typecheck given value as expression (true/false)
     obj[name].is = v =>
         isNotNull(v) && v.prototype && v.prototype.constructor
             ? v.prototype.constuctor === obj[name]
             : typecheck(v)
+    // Typecheck given value (return value and throw exception if not)
     obj[name].check = x =>
         obj[name].is(x)
             ? x
             : throwError("Check: Failed: Expect type '" + name + "'")
+    // Create a new type with one exact value
     obj[name].of = x => Type(name, v => obj[name].is(v) && v === x, () => x)
+    // Create a new sub type of current type.
+    obj[name].derive = f => Type(name, obj[name].is, f)
     obj[name].toString = () => name + '(x)'
     // obj[name].inspect = () => name + '(x)'
     return obj[name]
