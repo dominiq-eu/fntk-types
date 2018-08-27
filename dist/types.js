@@ -220,7 +220,9 @@ parcelRequire = (function(e, r, n, t) {
                                 )
                             }),
                             (i[t].derive = function(r) {
-                                return n(t, i[t].is, r)
+                                return n(t, i[t].is, function(n) {
+                                    return o(r(n))
+                                })
                             }),
                             (i[t].toString = function() {
                                 return t + '(x)'
