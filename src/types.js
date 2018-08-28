@@ -17,7 +17,9 @@ const isNumber = isType('number')
 const isBoolean = isType('boolean')
 const isArray = Array.isArray
 
+// eslint-disable-next-line
 const throwError = e => {
+    // eslint-disable-next-line
     throw new TypeError(e)
 }
 const trace = msg => v => {
@@ -34,7 +36,7 @@ const hasFields = (fields, obj) =>
         ? fields.filter(f => !obj.hasOwnProperty(f)).length === 0
         : false
 const toObject = (obj, [key, value]) =>
-    Object.assign(obj, {
+    Object.assign({}, obj, {
         [key]: value
     })
 const setPrototype = proto => obj => {
@@ -217,10 +219,8 @@ const Union = (name, typeDef) =>
 //
 
 const AnyType = Type('Any', v => isNotNull(v))
+// eslint-disable-next-line
 const NothingType = Type('Nothing', v => !isNotNull(v), x => undefined)
-
-// const Just = Data('Any', { value: AnyType })
-// const Nothing = Data('Any', {})
 
 const Maybe = Union('Maybe', {
     // Just: Data('Just', { value: AnyType }),
