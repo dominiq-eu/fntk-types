@@ -22,10 +22,6 @@ const throwError = e => {
     // eslint-disable-next-line
     throw new TypeError(e)
 }
-const trace = msg => v => {
-    console.log(msg, v)
-    return v
-}
 const Pipe = x => ({
     andThen: fn => Pipe(fn(x)),
     value: () => x
@@ -35,10 +31,10 @@ const hasFields = (fields, obj) =>
     isObject(obj) && isArray(fields)
         ? fields.filter(f => !obj.hasOwnProperty(f)).length === 0
         : false
-const toObject = (obj, [key, value]) =>
-    Object.assign({}, obj, {
-        [key]: value
-    })
+const toObject = (obj, [key, value]) => {
+    obj[key] = value
+    return obj
+}
 const setPrototype = proto => obj => {
     // TODO: Replace with Object.create() because setPrototypeOf can have a
     //       serious performance impact.
@@ -289,7 +285,7 @@ module.exports = {
 
 /*
 
-const { Maybe } = require("./type.js")
+const { Maybe } = require("./types.js")
 
 const j = Maybe.Just("Hey Ho!")
 const n = Maybe.Nothing()
@@ -313,7 +309,7 @@ e
 
 
 
-const Type = require("./type.js")
+const Type = require("./types.js")
 
 const Coord = Type.Type('Coord', Type.Number.is)
 Coord.toString()
