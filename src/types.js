@@ -32,7 +32,7 @@ const hasFields = (fields, obj) =>
         ? fields.filter(f => !obj.hasOwnProperty(f)).length === 0
         : false
 const toObject = (obj, [key, value]) => {
-    obj[key] = value
+    obj[key] = value // eslint-disable-line
     return obj
 }
 const setPrototype = proto => obj => {
@@ -300,7 +300,7 @@ Maybe.case(n, {
 })
 
 
-const { Result } = require("./type.js")
+const { Result } = require("./types.js")
 
 const a = Result.Ok({ Some: "Data" })
 a
